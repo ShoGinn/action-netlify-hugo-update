@@ -13,7 +13,7 @@ Particularly useful when paired with the [create-pull-request][1] action to auto
 ```yaml
       - uses: actions/checkout@v3
       - name: Update Hugo Version for Netlify
-        uses: shoginn/action-netlify-update-hugo@v1
+        uses: ShoGinn/action-netlify-hugo-update@v1.0.0
 ```
 
 ### Action Inputs
@@ -21,13 +21,6 @@ Particularly useful when paired with the [create-pull-request][1] action to auto
 |        Name         | Description                                              |     Default      |
 | :-----------------: | :------------------------------------------------------- | :--------------: |
 | `netlify-toml-path` | Path to the `netlify.toml` config file from project root | `./netlify.toml` |
-
-### Action Outputs
-
-The following output can be used by subsequent workflow steps.
-
-- `updatedConfig` - Whether or not this action updated the `netlify.toml` config file
-- `latestVersion` - The latest version of hugo available if installed via this action
 
 ### Action Behavior
 
@@ -51,7 +44,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Update Hugo Version For Netlify
         id: update-hugo-version-netlify
-        uses: shoginn/action-netlify-update-hugo@v1
+        uses: ShoGinn/action-netlify-hugo-update@v1.0.0
         with:
           netlify-toml-path: ./site/netlify.toml
 ```
@@ -75,7 +68,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Update Hugo Version for Netlify
         id: update-hugo-version-netlify
-        uses: shoginn/action-netlify-update-hugo@v1
+        uses: ShoGinn/action-netlify-hugo-update@v1.0.0
       - name: Create Pull Request
         id: createpr
         uses: peter-evans/create-pull-request@v4
