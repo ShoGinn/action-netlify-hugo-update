@@ -1,0 +1,19 @@
+name: Validate the Action
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+    - name: Proof the Script!
+      id: update-hugo-version-netlify
+      uses: ./
+      with:
+        netlify-toml-path: ./tests/netlify.toml

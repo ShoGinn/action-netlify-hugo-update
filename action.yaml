@@ -1,0 +1,48 @@
+name: Update Hugo Version in Netlify Config
+branding:
+  icon: arrow-up-circle
+  color: purple
+description: |
+  Update the version for Hugo in a netlify.toml file if needed.
+inputs:
+  netlify-toml-path:
+    description: Path to the netlify.toml config file from project root
+    required: false
+    default: './netlify.toml'
+runs:
+  using: composite
+  steps:
+    - name: Get Hugo Version
+      shell: bash
+      id: get-hugo-version
+      run: |
+        ## Get the Latest Hugo Version
+        latest_version="$(curl --silent "https://api.github.com/repos/gohugoio/hugo/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')"
+        echo HUGO_LATEST_VERSION="$latest_version" >> $GITHUB_ENV
+        echo ":rocket: Latest Hugo Version: $latest_version" >> $GITHUB_STEP_SUMMARY
+    - name: Get Netlify TOML Version
+      id: get-netlify-toml-version
+      shell: bash
+      run: |
+          ## Get the Netlify TOML Version
+          if [ -f "${{ inputs.netlify-toml-path }}" ]; then
+            current_version="$(sed <"${{ inputs.netlify-toml-path }}" -n 's/^HUGO_VERSION = //p' | tr -d "\"")"
+            echo NETLIFY_CURRENT_VERSION="$current_version" >> $GITHUB_ENV
+            echo "Current Netlify TOML Version: $current_version" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Error "${{ inputs.netlify-toml-path }}" does not exist" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+    - name: Update Netlify TOML
+      id: update-netlify-toml
+      shell: bash
+      run: |
+          ## Update the Netlify TOML
+          toml_updated=false
+          echo NETLIFY_TOML_UPDATED=$toml_updated >> $GITHUB_ENV
+          if [ "${{ env.NETLIFY_CURRENT_VERSION }}" != "${{ env.HUGO_LATEST_VERSION }}" ]; then
+            sed -i.bak -e "s/HUGO_VERSION = .*/HUGO_VERSION = \"${{ env.HUGO_LATEST_VERSION }}\"/g" "${{ inputs.netlify-toml-path }}" && rm -f "${{ inputs.netlify-toml-path }}".bak
+            toml_updated=true
+            echo NETLIFY_TOML_UPDATED=$toml_updated >> $GITHUB_ENV
+          fi
+          echo "Was the Netlify TOML Updated: $toml_updated" >> $GITHUB_STEP_SUMMARY
