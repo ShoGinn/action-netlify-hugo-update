@@ -1,7 +1,7 @@
-name: Update Hugo Version in Netlify Config
+name: Update HUGO Version to latest in Netlify TOML
 branding:
   icon: arrow-up-circle
-  color: purple
+  color: blue
 description: |
   Update the version for Hugo in a netlify.toml file if needed.
 inputs:
