@@ -1,4 +1,4 @@
-# Netlify Update Hugo Version
+# Update HUGO Version to latest in Netlify TOML
 
 A GitHub action for keeping the hugo version in netlify.toml up to date.
 
