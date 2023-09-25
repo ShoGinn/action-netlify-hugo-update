@@ -17,7 +17,7 @@ runs:
       id: get-hugo-version
       run: |
         ## Get the Latest Hugo Version
-        latest_version="$(curl --silent "https://api.github.com/repos/gohugoio/hugo/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/' || echo "Error getting Hugo version")"
+        latest_version="$(curl --silent -q "https://api.github.com/repos/gohugoio/hugo/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/' || echo "Error getting Hugo version")"
         echo "HUGO_LATEST_VERSION=\"$latest_version\"" >> "$GITHUB_ENV"
         echo ":rocket: Latest Hugo Version: $latest_version" >> "$GITHUB_STEP_SUMMARY"
     - name: Get Netlify TOML Version
