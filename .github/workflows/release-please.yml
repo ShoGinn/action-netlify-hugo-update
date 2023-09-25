@@ -16,7 +16,6 @@ jobs:
         with:
           release-type: node
           package-name: release-please-action
-          command: github-release
       - uses: actions/checkout@v4
       - name: tag major and minor versions
         if: ${{ steps.release.outputs.release_created }}
